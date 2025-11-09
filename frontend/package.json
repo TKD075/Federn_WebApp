@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "mkdir -p build && cp -r index.html styles.css index.js profile.react.js common assets build 2>/dev/null || true"
+  },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

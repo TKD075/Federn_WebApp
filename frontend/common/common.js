@@ -1,4 +1,4 @@
-// Common interactions: year stamp, mobile menu toggle, contact form, auth modal
+﻿// Common interactions: year stamp, mobile menu toggle, contact form, auth modal
 
 function initCommon() {
   const year = document.getElementById('year');
@@ -45,7 +45,7 @@ function initCommon() {
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         form.reset();
-        setStatus('送信しました。ありがとうございます。');
+        setStatus('ありがとうございます。これはAPI疎通確認用ダミーメールです。');
       } catch (err) {
         setStatus(`送信に失敗しました: ${escapeHTML(String(err))}`, true);
       } finally {
@@ -87,4 +87,5 @@ function escapeHTML(s) {
 
 window.addEventListener('DOMContentLoaded', initCommon);
 window.addEventListener('partials:loaded', initCommon);
+
 

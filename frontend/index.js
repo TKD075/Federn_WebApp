@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         form.reset();
-        setStatus('送信しました。ありがとうございます。');
+        setStatus('ありがとうございます。メールの送信に成功しました。');
       } catch (err) {
         setStatus(`送信に失敗しました: ${escapeHTML(String(err))}`, true);
       } finally {
@@ -179,3 +179,4 @@ function escapeHTML(s) {
 function escapeAttr(s) {
   return escapeHTML(s);
 }
+

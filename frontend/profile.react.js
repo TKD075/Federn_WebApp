@@ -4,10 +4,22 @@ const e = React.createElement;
 
 function HeroProfile({ profile }) {
   const initial = (profile.name || 'U').trim().charAt(0).toUpperCase();
+  const avatar = (profile.avatar_url || 'assets/favicon_tkd.svg').trim();
+  const avatarEl = avatar
+    ? e('img', {
+        className: 'avatar',
+        src: avatar,
+        alt: `${profile.name || 'ユーザー'}のアイコン`,
+        width: 96,
+        height: 96,
+        loading: 'eager',
+        decoding: 'async',
+      })
+    : e('div', { className: 'avatar', 'aria-hidden': 'true' }, initial);
   return e(
     React.Fragment,
     null,
-    e('div', { className: 'avatar', 'aria-hidden': 'true' }, initial),
+    avatarEl,
     e(
       'h1',
       { id: 'hero-title', className: 'hero-title' },

@@ -54,6 +54,7 @@ body {
   color: #fff; font-weight: 800; font-size: 32px;
   box-shadow: 0 6px 24px rgba(15,23,42,.15), inset 0 0 0 1px rgba(255,255,255,.6);
 }
+img.avatar { object-fit: cover; background: none; display: block; }
 .lead { color: var(--muted); margin: 0 auto 22px; max-width: 720px; }
 .actions { display: inline-flex; gap: 12px; }
 

@@ -20,3 +20,64 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+ 
+### Project: Federn WebApp (general)
+# Env files
+.env
+.env.*
+!.env.example
+
+# Logs / temp
+*.log
+*.tmp
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors/IDE
+.idea/
+.fleet/
+.history/
+.cursor/
+.vscode/
+
+# Secrets/keys (keep tracked ones as-is)
+*.pem
+*.key
+*.p12
+*.crt
+
+### Backend (Go)
+backend/server
+backend/server.exe
+backend/*.exe
+backend/*.test
+backend/coverage.out
+backend/bin/
+backend/build/
+
+### Frontend (Node)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/.nuxt/
+frontend/.cache/
+frontend/.parcel-cache/
+frontend/.vite/
+frontend/coverage/
+frontend/npm-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/.eslintcache
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+### Docker
+docker-compose.override.yml
+.docker/

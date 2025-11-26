@@ -1,0 +1,27 @@
+name: CI/CD Deploy to EC2
+
+on:
+    push:
+        branches: [ main ]  # mainブランチへのpushをトリガー:contentReference[oaicite:5]{index=5}
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest  # GitHubホストランナー環境
+        steps:
+            # 必要に応じてソースコードをチェックアウト (pull運用なら省略可)
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Deploy to EC2 via SSH  # EC2へのデプロイステップ
+              uses: appleboy/ssh-action@v0.1.10  # SSH接続用アクションを使用:contentReference[oaicite:6]{index=6}
+              with:
+                host: ${{ secrets.HOST }}             # EC2のホスト名またはIP:contentReference[oaicite:7]{index=7}
+                username: ${{ secrets.SSH_USER }}     # SSH接続ユーザ名（例: ubuntu）
+                key: ${{ secrets.EC2_SSH_KEY }}       # SSH秘密鍵 (GitHubに登録したシークレット)
+                port: 22
+                script: |
+                    cd /srv/Federn_WebApp
+                    # リポジトリ最新化とコンテナ再起動:contentReference[oaicite:8]{index=8}
+                    git pull origin main
+                    docker compose up --build -d --force-recreate
+                    docker image prune -f  # 不要なイメージをクリーンアップ

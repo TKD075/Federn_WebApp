@@ -20,14 +20,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Prepare SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_ec2
+          chmod 600 ~/.ssh/id_ec2
+
       - name: Deploy to EC2 over SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_SSH_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          script: |
+        env:
+          SSH_USER: ${{ secrets.EC2_SSH_USER }}
+          SSH_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          ssh -i ~/.ssh/id_ec2 \
+              -o StrictHostKeyChecking=no \
+              -o IdentitiesOnly=yes \
+              "${SSH_USER}@${SSH_HOST}" <<'EOF'
             set -euo pipefail
             cd /srv/Federn_WebApp
             git fetch origin main
@@ -35,3 +42,4 @@ jobs:
             docker compose pull
             docker compose up --build -d --force-recreate
             docker image prune -f
+          EOF

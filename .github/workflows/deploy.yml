@@ -26,12 +26,16 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_ec2
           chmod 600 ~/.ssh/id_ec2
 
+      - name: Validate SSH key
+        run: ssh-keygen -lf ~/.ssh/id_ec2 >/dev/null
+
       - name: Deploy to EC2 over SSH
         env:
           SSH_USER: ${{ secrets.EC2_SSH_USER }}
           SSH_HOST: ${{ secrets.EC2_HOST }}
         run: |
           ssh -i ~/.ssh/id_ec2 \
+              -vvv \
               -o StrictHostKeyChecking=no \
               -o IdentitiesOnly=yes \
               "${SSH_USER}@${SSH_HOST}" <<'EOF'

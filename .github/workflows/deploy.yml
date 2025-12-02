@@ -39,6 +39,7 @@ jobs:
         env:
           SSH_USER: ${{ secrets.EC2_USER }}
           SSH_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_PROJECT_DIR: /srv/Federn_WebApp
         run: |
           ssh -i ~/.ssh/id_ec2 \
               -vvv \
@@ -46,7 +47,9 @@ jobs:
               -o IdentitiesOnly=yes \
               "${SSH_USER}@${SSH_HOST}" <<'EOF'
             set -euo pipefail
-            cd /srv/Federn_WebApp
+            PROJECT_DIR="${REMOTE_PROJECT_DIR:-/srv/Federn_WebApp}"
+            sudo chown -R "$USER":"$USER" "$PROJECT_DIR"
+            cd "$PROJECT_DIR"
             git fetch origin main
             git reset --hard origin/main
             docker compose pull

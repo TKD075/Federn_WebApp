@@ -20,6 +20,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Validate required secrets
+        run: |
+          test -n "${{ secrets.EC2_SSH_KEY }}" || { echo 'Missing secret: EC2_SSH_KEY' >&2; exit 1; }
+          test -n "${{ secrets.EC2_SSH_USER }}" || { echo 'Missing secret: EC2_SSH_USER' >&2; exit 1; }
+          test -n "${{ secrets.EC2_HOST }}" || { echo 'Missing secret: EC2_HOST' >&2; exit 1; }
+
       - name: Prepare SSH key
         run: |
           mkdir -p ~/.ssh

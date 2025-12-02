@@ -20,7 +20,7 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
- 
+
 ### Project: Federn WebApp (general)
 # Env files
 .env

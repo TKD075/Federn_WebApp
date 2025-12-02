@@ -20,20 +20,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate required secrets
-        run: |
-          test -n "${{ secrets.EC2_SSH_KEY }}" || { echo 'Missing secret: EC2_SSH_KEY' >&2; exit 1; }
-          test -n "${{ secrets.EC2_USER }}" || { echo 'Missing secret: EC2_USER' >&2; exit 1; }
-          test -n "${{ secrets.EC2_HOST }}" || { echo 'Missing secret: EC2_HOST' >&2; exit 1; }
-
       - name: Prepare SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_ec2
           chmod 600 ~/.ssh/id_ec2
-
-      - name: Validate SSH key
-        run: ssh-keygen -lf ~/.ssh/id_ec2 >/dev/null
 
       - name: Deploy to EC2 over SSH
         env:
@@ -42,7 +33,6 @@ jobs:
           REMOTE_PROJECT_DIR: /srv/Federn_WebApp
         run: |
           ssh -i ~/.ssh/id_ec2 \
-              -vvv \
               -o StrictHostKeyChecking=no \
               -o IdentitiesOnly=yes \
               "${SSH_USER}@${SSH_HOST}" <<'EOF'

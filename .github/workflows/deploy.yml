@@ -23,7 +23,7 @@ jobs:
       - name: Validate required secrets
         run: |
           test -n "${{ secrets.EC2_SSH_KEY }}" || { echo 'Missing secret: EC2_SSH_KEY' >&2; exit 1; }
-          test -n "${{ secrets.EC2_SSH_USER }}" || { echo 'Missing secret: EC2_SSH_USER' >&2; exit 1; }
+          test -n "${{ secrets.EC2_USER }}" || { echo 'Missing secret: EC2_USER' >&2; exit 1; }
           test -n "${{ secrets.EC2_HOST }}" || { echo 'Missing secret: EC2_HOST' >&2; exit 1; }
 
       - name: Prepare SSH key
@@ -37,7 +37,7 @@ jobs:
 
       - name: Deploy to EC2 over SSH
         env:
-          SSH_USER: ${{ secrets.EC2_SSH_USER }}
+          SSH_USER: ${{ secrets.EC2_USER }}
           SSH_HOST: ${{ secrets.EC2_HOST }}
         run: |
           ssh -i ~/.ssh/id_ec2 \

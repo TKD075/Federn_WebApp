@@ -1,8 +1,18 @@
-// Render hero/about with data fetched from backend using React (no JSX)
+type Profile = {
+  name?: string;
+  title?: string;
+  bio?: string;
+  avatar_url?: string;
+  github_url?: string;
+};
 
 const e = React.createElement;
 
-function HeroProfile({ profile }) {
+type HeroProfileProps = {
+  profile: Profile;
+};
+
+function HeroProfile({ profile }: HeroProfileProps) {
   const initial = (profile.name || 'U').trim().charAt(0).toUpperCase();
   const avatar = (profile.avatar_url || 'assets/favicon_tkd.svg').trim();
   const avatarEl = avatar
@@ -26,19 +36,11 @@ function HeroProfile({ profile }) {
       e('span', { className: 'name' }, profile.name || ''),
       e('span', { className: 'title' }, profile.title || '')
     ),
-    e(
-      'p',
-      { className: 'lead' },
-      profile.bio || ''
-    ),
+    e('p', { className: 'lead' }, profile.bio || ''),
     e(
       'div',
       { className: 'actions' },
-      e(
-        'a',
-        { href: '#projects', id: 'cta', className: 'btn btn-primary' },
-        'プロジェクトを見る'
-      ),
+      e('a', { href: '#projects', id: 'cta', className: 'btn btn-primary' }, 'プロジェクトを見る'),
       e('a', { className: 'btn btn-ghost', href: '#about' }, '自己紹介'),
       profile.github_url
         ? e(
@@ -63,7 +65,11 @@ function HeroProfile({ profile }) {
   );
 }
 
-function AboutProfile({ profile }) {
+type AboutProfileProps = {
+  profile: Profile;
+};
+
+function AboutProfile({ profile }: AboutProfileProps) {
   return e(
     'div',
     null,
@@ -79,11 +85,10 @@ function AboutProfile({ profile }) {
   );
 }
 
-async function loadProfile() {
-  const endpoint = '/api/profile';
-  const res = await fetch(endpoint);
+async function loadProfile(): Promise<Profile> {
+  const res = await fetch('/api/profile');
   if (!res.ok) throw new Error('failed to load profile');
-  return await res.json();
+  return (await res.json()) as Profile;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -99,8 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const root = ReactDOM.createRoot(aboutRootEl);
       root.render(e(AboutProfile, { profile }));
     }
-  } catch (err) {
-    // Render minimal fallback if API fails
+  } catch {
     const heroRootEl = document.getElementById('hero-react');
     if (heroRootEl) {
       heroRootEl.innerHTML = '<p class="lead">プロフィールを取得できませんでした。</p>';

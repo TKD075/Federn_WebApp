@@ -1,9 +1,18 @@
 {
   "scripts": {
-    "build": "mkdir -p build && cp -r index.html myself.html production.html styles.css index.js profile.react.js common assets build 2>/dev/null || true"
+    "clean": "node -e \"const fs=require('fs');for (const dir of ['dist','build']) { if (fs.existsSync(dir)) fs.rmSync(dir,{recursive:true,force:true}); }\"",
+    "typecheck": "tsc --noEmit",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:static": "mkdir -p build && cp -r index.html myself.html production.html styles.css common assets dist build 2>/dev/null || true",
+    "build": "npm run build:ts && npm run build:static"
   },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.1.5",
+    "typescript": "^5.6.3"
   }
 }
